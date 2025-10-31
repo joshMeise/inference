@@ -1,4 +1,4 @@
-# mavlink_bin_to_ascii.py - converts MAVLink data from binary format to ASCII format
+# bin_to_ascii.py - converts MAVLink data from binary format to ASCII format
 #
 # Josh Meise
 # 10-31-2025
@@ -10,7 +10,7 @@ import os
 
 def main():
     if len(sys.argv) != 3:
-        print("usage: python3 mavlink_bin_to_ascii.py <infile.bin> <outfile.txt>")
+        print("usage: python3 bin_to_ascii.py <infile.bin> <outfile.txt>")
         sys.exit(1)
 
     infile = sys.argv[1]
