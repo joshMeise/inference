@@ -48,7 +48,7 @@ def main():
 
     with open(infile, read_type) as ifile:
         bytes_processed = 0
-        
+                
         while bytes_processed < file_size:
             code = ifile.read(1*mult)
             length = ifile.read(1*mult)
