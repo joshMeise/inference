@@ -4,39 +4,64 @@
 # 10-31-2025
 # Description: Takes in a binary file, writes to an ASCII file.
 #
+# TODO:
+# - Check message types with arrays/strings.
+#
 
 import sys
 import os
-from pymavlink.dialects.v20 import common as mavlink2_common
 
-# Message IDs not handled by pymavlink.
-UNHANDLED_IDS = [8, 300, 380, 397, 410, 411]
-
+# Maps message IDs to maximum lengths for MAVLink 2 messages.
 LEN_MAP = {
-    "8": 53,
-    "300": 22,
-    "380": 10,
-    "397": 108,
-    "410": 53,
+    "0": 9,
+    "1": 43,
+    "2": 12,
+    "4": 14,
+    "8": 36,
+    "11": 6,
+    "21": 2,
+    "22": 25,       # contains string value
+    "23": 23,       # contains string value
+    "24": 52,
+    "29": 16,
+    "30": 28,
+    "31": 48,       # contains array
+    "32": 28,
+    "33": 28,
+    "42": 18,
+    "43": 3,
+    "44": 9,
+    "45": 3,
+    "46": 2,
+    "47": 8,
+    "51": 5,
+    "69": 30,
+    "73": 38,
+    "74": 20,
+    "76": 33,
+    "77": 10,
+    "83": 37,       # contains array
+    "85": 51,
+    "87": 51,
+    "109": 9,
+    "132": 39,      # contains array
+    "141": 32,
+    "147": 54,      # contains array
+    "148": 78,      # contains array
+    "230": 42,
+    "241": 32,
+    "242": 60,      # contains array
+    "245": 2,
+    "253": 54,      # constains string
+    "300": 22,      # contains array
+    "340": 70,      # contains array
+    "380": 20,
+    "397": 108,     # contains string
+    "410": 53,      # contains array
     "411": 3,
+    "12901": 59,    # contains array
+    "12904": 54,    # contains array
 }
-
-TYPE_SIZES = {
-    "char": 1,
-    "int8_t": 1,
-    "uint8_t": 1,
-    "int16_t": 2,
-    "uint16_t": 2,
-    "int32_t": 4,
-    "uint32_t": 4,
-    "float": 4,
-    "int64_t": 8,
-    "uint64_t": 8,
-    "double": 8,
-}
-
-def payload_len_from_field_types(field_types):
-    return sum(TYPE_SIZES[f] for f in field_types if f in TYPE_SIZES)
 
 def main():
     if len(sys.argv) != 3:
@@ -85,15 +110,15 @@ def main():
             
             msg_id_int = int.from_bytes(msg_id, byteorder = "little")
             
-            if msg_id_int in UNHANDLED_IDS:
+            # MAVLink 2 messages may be truncated.
+            if code == b'\xfd':
                 payload_len = LEN_MAP[str(msg_id_int)]
-            else:
-                msg_class = mavlink2_common.mavlink_map[msg_id_int]
-                payload_len = payload_len_from_field_types(msg_class.fieldtypes)
             
-            if int.from_bytes(length) < payload_len:
-                payload += b'\x00'*(payload_len - int.from_bytes(length))
-                length = payload_len.to_bytes()
+                if int.from_bytes(length) < payload_len:
+                    payload += b'\x00'*(payload_len - int.from_bytes(length))
+                    length = payload_len.to_bytes()
+                elif int.from_bytes(length) > payload_len:
+                    print(f"Length greater than max payload length on message id {msg_id_int}.")
 
             write_string = code + length
             if code == b'\xfd': write_string += (inc_flags + cmp_flags)
