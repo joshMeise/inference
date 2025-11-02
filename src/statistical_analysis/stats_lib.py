@@ -6,6 +6,7 @@
 #
 
 import numpy as np
+from scipy.stats import entropy
 
 '''
 Computes the mean across each byte position in a dataset.
@@ -76,8 +77,8 @@ def bit_entropy_per_byte(data, quiet = True):
         probs = counts/num_messages
 
         # Calculate entropy.
-        entropies[i] = -np.sum(probs*np.log2(probs))
-
+        entropies[i] = entropy(probs, base = 2)
+        
     if not quiet:
         print(f"Byte     | Entropy")
         print("-----------------------")
