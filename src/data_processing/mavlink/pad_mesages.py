@@ -13,54 +13,54 @@ import os
 
 # Maps message IDs to maximum lengths for MAVLink 2 messages.
 LEN_MAP = {
-    "0": 9,
-    "1": 43,
-    "2": 12,
-    "4": 14,
-    "8": 36,
-    "11": 6,
-    "21": 2,
-    "22": 25,       # contains string value
-    "23": 23,       # contains string value
-    "24": 52,
-    "29": 16,
-    "30": 28,
-    "31": 48,       # contains array
-    "32": 28,
-    "33": 28,
-    "42": 18,
-    "43": 3,
-    "44": 9,
-    "45": 3,
-    "46": 2,
-    "47": 8,
-    "51": 5,
-    "69": 30,
-    "73": 38,
-    "74": 20,
-    "76": 33,
-    "77": 10,
-    "83": 37,       # contains array
-    "85": 51,
-    "87": 51,
-    "109": 9,
-    "132": 39,      # contains array
-    "141": 32,
-    "147": 54,      # contains array
-    "148": 78,      # contains array
-    "230": 42,
-    "241": 32,
-    "242": 60,      # contains array
-    "245": 2,
-    "253": 54,      # constains string
-    "300": 22,      # contains array
-    "340": 70,      # contains array
-    "380": 20,
-    "397": 108,     # contains string
-    "410": 53,      # contains array
-    "411": 3,
-    "12901": 59,    # contains array
-    "12904": 54,    # contains array
+    0: 9,
+    1: 43,
+    2: 12,
+    4: 14,
+    8: 36,
+    11: 6,
+    21: 2,
+    22: 25,       # contains string value
+    23: 23,       # contains string value
+    24: 52,
+    29: 16,
+    30: 28,
+    31: 48,       # contains array
+    32: 28,
+    33: 28,
+    42: 18,
+    43: 3,
+    44: 9,
+    45: 3,
+    46: 2,
+    47: 8,
+    51: 5,
+    69: 30,
+    73: 38,
+    74: 20,
+    76: 33,
+    77: 10,
+    83: 37,       # contains array
+    85: 51,
+    87: 51,
+    109: 9,
+    132: 39,      # contains array
+    141: 32,
+    147: 54,      # contains array
+    148: 78,      # contains array
+    230: 42,
+    241: 32,
+    242: 60,      # contains array
+    245: 2,
+    253: 54,      # constains string
+    300: 22,      # contains array
+    340: 70,      # contains array
+    380: 20,
+    397: 108,     # contains string
+    410: 53,      # contains array
+    411: 3,
+    12901: 59,    # contains array
+    12904: 54,    # contains array
 }
 
 def main():
@@ -112,7 +112,7 @@ def main():
             
             # MAVLink 2 messages may be truncated.
             if code == b'\xfd':
-                payload_len = LEN_MAP[str(msg_id_int)]
+                payload_len = LEN_MAP[msg_id_int]
             
                 if int.from_bytes(length) < payload_len:
                     payload += b'\x00'*(payload_len - int.from_bytes(length))
