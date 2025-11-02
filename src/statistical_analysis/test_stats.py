@@ -35,5 +35,7 @@ def main():
 
     freqs = sl.byte_freqs_per_byte(data, quiet = False)
     
+    mins_maxs = sl.min_max_per_byte(data, quiet = False)
+
 if __name__ == "__main__":
     main()
