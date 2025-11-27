@@ -25,7 +25,7 @@ def read_file(fname):
     data = data.split('\n')[:-1]
     
     # Convert each hex string into a list of bytes
-    data = np.array([list(bytes.fromhex(x)) for x in data], dtype=np.uint8)
+    data = np.array([list(bytes.fromhex(x)) for x in data], dtype = np.uint8)
 
     return data
 
