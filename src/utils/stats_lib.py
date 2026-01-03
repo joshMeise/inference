@@ -7,6 +7,7 @@
 
 import numpy as np
 from scipy.stats import entropy
+import struct
 
 '''
 Computes the mean across each byte position in a dataset.
@@ -83,7 +84,7 @@ def bit_entropy_per_byte(data, quiet = True):
         print(f"Byte     | Entropy")
         print("-----------------------")
         for i, e in enumerate(entropies):
-            print(f"{i:<8} | {e:12.6f}")
+            print(f"{i:<8} | {e:12.6e}")
         print('\n')
 
     return entropies
@@ -149,5 +150,140 @@ def min_max_per_byte(data, quiet = True):
         print('\n')
 
     return np.stack((mins, maxs))
+
+
+
+
+
+
+
+
+
+### BYTE-WWISE CALCULATIONS ####
+'''
+Computes the mean of a value specified by a range of bytes.
+
+Inputs:
+    - Two-dimensional array of data, rows are messages, columns are various byte values per message
+    - Option to consider it as little endian representation
+    - Option to specify whether data is signed
+    - Data type (integer or float)
+    - Option to print out values
+
+Outputs:
+    - Mean value for the bytes specified.
+'''
+def mean_per_bytes(data, little_endian = False, signed = False, dtype = "integer", quiet = True):
+    # Find the value specified by each row.
+    if dtype == "integer":
+        if little_endian:
+            vals = [int.from_bytes(row.tobytes(), byteorder = "little", signed = signed) for row in data]
+        else:
+            vals = [int.from_bytes(row.tobytes(), byteorder = "big", signed = signed) for row in data]
+    elif dtype == "float":
+        if little_endian:
+            vals = [struct.unpack("<f", row) for row in data]
+        else:
+            vals = [struct.unpack(">f", row) for row in data]
+    else:
+        print("Invalid data type.")
+        return
+
+    # Compute mean.
+    mean = np.mean(vals)
+    
+    if not quiet:
+        print(f"Mean")
+        print("------------")
+        print(f"{mean:.6e}")
+        print('\n')
+
+    return mean
+
+'''
+Computes the variance of a value specified by a range of bytes.
+
+Inputs:
+    - Two-dimensional array of data, rows are messages, columns are various byte values per message
+    - Option to consider it as little endian representation
+    - Option to specify whether data is signed
+    - Data type (integer or float)
+    - Option to print out values.
+
+Outputs:
+    - Variance for the bytes specified.
+'''
+def variance_per_bytes(data, little_endian = False, signed = False, dtype = "integer", quiet = True):
+    # Find the value specified by each row.
+    if dtype == "integer":
+        if little_endian:
+            vals = [int.from_bytes(row.tobytes(), byteorder = "little", signed = signed) for row in data]
+        else:
+            vals = [int.from_bytes(row.tobytes(), byteorder = "big", signed = signed) for row in data]
+    elif dtype == "float":
+        if little_endian:
+            vals = [struct.unpack("<f", row) for row in data]
+        else:
+            vals = [struct.unpack(">f", row) for row in data]
+    else:
+        print("Invalid data type.")
+        return
+
+    # Compute variance.
+    variance =  np.var(vals)
+
+    if not quiet:
+        print(f"Variance")
+        print("------------")
+        print(f"{variance:.6e}")
+        print('\n')
+
+    return variance
+
+'''
+Computes the entropy (in bits) for a given value in the dataset.
+
+Inputs:
+    - Two-dimensional array of data, rows are messages, columns are variouts byte values per message
+    - Option to consider it as little-endian representation
+    - Option to specify whether the data is signed
+    - Data type (integer or float)
+    - Option to print out values
+
+Outputs:
+    - Entropy for the bytes specified
+'''
+def bit_entropy_per_bytes(data, little_endian = False, signed = False, dtype = "integer", quiet = True):
+    # Find the value specified by each row.
+    if dtype == "integer":
+        if little_endian:
+            vals = [int.from_bytes(row.tobytes(), byteorder = "little", signed = signed) for row in data]
+        else:
+            vals = [int.from_bytes(row.tobytes(), byteorder = "big", signed = signed) for row in data]
+    elif dtype == "float":
+        if little_endian:
+            vals = [struct.unpack("<f", row) for row in data]
+        else:
+            vals = [struct.unpack(">f", row) for row in data]
+    else:
+        print("Invalid data type.")
+        return
+
+    # Find how many times each value occurs.
+    _, counts = np.unique(vals, return_counts = True)
+        
+    # Find the probability that each byte occurs.
+    probs = counts/len(vals)
+
+    # Calculate entropy.
+    ent = entropy(probs, base = 2)
+        
+    if not quiet:
+        print(f"Entropy")
+        print("------------")
+        print(f"{ent:12.6e}")
+        print('\n')
+
+    return ent
 
 

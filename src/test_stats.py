@@ -31,5 +31,15 @@ def main():
     
     mins_maxs = sl.min_max_per_byte(data, quiet = False)
 
+    # Extrct the first 4 columns of data.
+    first_4_cols = [row[4:8] for row in data]
+
+    mean = sl.mean_per_bytes(first_4_cols, little_endian = True, quiet = False, dtype = "float")
+
+    variance = sl.variance_per_bytes(first_4_cols, little_endian = True, quiet = False, dtype = "integer")
+
+    entropy = sl.bit_entropy_per_bytes(first_4_cols, little_endian = True, quiet = False, dtype = "integer")
+
+
 if __name__ == "__main__":
     main()
