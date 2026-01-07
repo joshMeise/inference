@@ -17,10 +17,14 @@
 class Grammar {
 public:
     // Default constructor.
-    Grammar(void) = default;
+    Grammar(void);
 
     // Add message to grammar.
     void add_message(std::vector<uint8_t> message);
+
+    // Getter methods.
+    int get_num_non_terminals(void) const;
+    int get_num_terminals(void) const;
 
     // Printing methods.
     void print(std::ostream *os);
@@ -28,5 +32,6 @@ public:
 
 private:
     std::unordered_map<int, std::vector<std::unordered_set<uint8_t>>> grammar;
-
+    int num_non_terminals;
+    int num_terminals;
 };

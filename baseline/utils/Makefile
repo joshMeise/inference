@@ -1,5 +1,5 @@
 CXXFLAGS=-Wall -Wpedantic -std=c++20
-OFILES=grammar.o
+OFILES=grammar.o mavlink.o
 CC=g++
 
 all: $(OFILES)

@@ -3,7 +3,7 @@
  *
  * Josh Meise
  * 01-06-2026
- * Description: 
+ * Description: Currently only suports MAVLink 2 messages;signatures currently not supported.
  *
  * Note: Use std::variant for different options on headers.
  *       Use std::optional to define signature
@@ -14,6 +14,12 @@
 #include <vector>
 #include <iostream>
 
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ *                                                         *
+ *                         Header                          *
+ *                                                         *
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
 class Header {
 public:
     // Default constructor.
@@ -21,6 +27,12 @@ public:
 
     // Deserializer.
     Header(std::vector<uint8_t> bytes);
+
+    // Serializer.
+    std::vector<uint8_t> serialize(void) const;
+
+    // Getter methods.
+    int get_len(void) const;
 
     // Printing methods.
     void print(std::ostream *os);
@@ -35,7 +47,13 @@ private:
     uint8_t sys_id;
     uint8_t comp_id;
     uint8_t msg_id[3];
-}
+};
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ *                                                         *
+ *                         Payload                         *
+ *                                                         *
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 class Payload {
 public:
@@ -45,34 +63,46 @@ public:
     // Desrializer.
     Payload(std::vector<uint8_t> bytes);
 
-   // Printing methods.
+    // Serializer.
+    std::vector<uint8_t> serialize(void) const;
+
+    // Printing methods.
     void print(std::ostream *os);
     friend std::ostream& operator<<(std::ostream& os, Payload& payload);
 
 private:
     // Member variables.
-    std::vector<uint8_t> payload;
+    std::vector<uint8_t> pl;
     uint8_t checksum[2];
-}
+};
 
-class MavlinkMessage {
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ *                                                         *
+ *                    MAVLinkMessage                       *
+ *                                                         *
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+class MAVLinkMessage {
 public:
     // Default constructor.
-    Message(void) = default;
+    MAVLinkMessage(void) = default;
 
     // Deserializer.
-    Message(std::vector<uint8_t> bytes);
+    MAVLinkMessage(std::vector<uint8_t> bytes);
+
+    // Serializer.
+    std::vector<uint8_t> serialize(void) const;
 
     // Getter methods.
-    int get_length(void) const;
+    int get_len(void) const;
 
     // Printing methods.
     void print(std::ostream *os);
-    friend std::ostream& operator<<(std::ostream& os, MavlinkMessage& message);
+    friend std::ostream& operator<<(std::ostream& os, MAVLinkMessage& message);
 
 private:
     // Member variables.
     Header header;
     Payload payload;
-    int length;
-}
+
+};
