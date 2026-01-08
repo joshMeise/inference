@@ -20,17 +20,17 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 // Deserializer.
-Header::Header(std::vector<uint8_t> bytes) {
-    stx = bytes[0];
-    len = bytes[1];
-    inc_flags = bytes[2];
-    comp_flags = bytes[3];
-    seq = bytes[4];
-    sys_id = bytes[5];
-    comp_id = bytes[6];
-    msg_id[0] = bytes[7];
-    msg_id[1] = bytes[8];
-    msg_id[2] = bytes[9];
+Header::Header(const std::vector<uint8_t>& bytes, int offset) {
+    stx = bytes[offset + 0];
+    len = bytes[offset + 1];
+    inc_flags = bytes[offset + 2];
+    comp_flags = bytes[offset + 3];
+    seq = bytes[offset + 4];
+    sys_id = bytes[offset + 5];
+    comp_id = bytes[offset + 6];
+    msg_id[0] = bytes[offset + 7];
+    msg_id[1] = bytes[offset + 8];
+    msg_id[2] = bytes[offset + 9];
 }
 
 // Serializer.
@@ -78,10 +78,10 @@ std::ostream& operator<<(std::ostream& os, Header& header) {
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 // Deserializer.
-Payload::Payload(std::vector<uint8_t> bytes) {
-    pl = std::vector<uint8_t>(bytes.begin(), bytes.end() - CSLEN);
-    checksum[0] = bytes[bytes.size() - 2];
-    checksum[1] = bytes[bytes.size() - 1];
+Payload::Payload(const std::vector<uint8_t>& bytes, int offset, int len) {
+    pl = std::vector<uint8_t>(bytes.begin() + offset + HDRLEN, bytes.begin() + offset + HDRLEN + len);
+    checksum[0] = bytes.at(offset + HDRLEN + len);
+    checksum[1] = bytes.at(offset + HDRLEN + len + 1);
 }
 
 // Serializer.
@@ -117,10 +117,10 @@ std::ostream& operator<<(std::ostream& os, Payload& payload) {
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 // Deserializer.
-MAVLinkMessage::MAVLinkMessage(std::vector<uint8_t> bytes) :
-    header(std::vector<uint8_t>(bytes.begin(), bytes.begin() + HDRLEN)) {
+MAVLinkMessage::MAVLinkMessage(const std::vector<uint8_t>& bytes, int offset) :
+    header(bytes, offset) {
     // Construct payload.
-    payload = Payload(std::vector<uint8_t>(bytes.begin() + HDRLEN, bytes.begin() + HDRLEN + header.get_len() + CSLEN));
+    payload = Payload(bytes, offset, header.get_len());
 }
 
 // Serializer.

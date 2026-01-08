@@ -26,7 +26,7 @@ public:
     Header(void) = default;
 
     // Deserializer.
-    Header(std::vector<uint8_t> bytes);
+    Header(const std::vector<uint8_t>& bytes, int offset);
 
     // Serializer.
     std::vector<uint8_t> serialize(void) const;
@@ -61,7 +61,7 @@ public:
     Payload(void) = default;
 
     // Desrializer.
-    Payload(std::vector<uint8_t> bytes);
+    Payload(const std::vector<uint8_t>& bytes, int offset, int len);
 
     // Serializer.
     std::vector<uint8_t> serialize(void) const;
@@ -88,7 +88,7 @@ public:
     MAVLinkMessage(void) = default;
 
     // Deserializer.
-    MAVLinkMessage(std::vector<uint8_t> bytes);
+    MAVLinkMessage(const std::vector<uint8_t>& bytes, int offset);
 
     // Serializer.
     std::vector<uint8_t> serialize(void) const;

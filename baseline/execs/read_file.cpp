@@ -50,7 +50,7 @@ int main(void) {
     bytes_consumed = 0;
     while (bytes_consumed < bytes.size()) {
         // Create message object.
-        message = MAVLinkMessage(std::vector<uint8_t>(bytes.begin() + bytes_consumed, bytes.end()));
+        message = MAVLinkMessage(bytes, bytes_consumed);
 
         // Remove bytes from byte vector after conversion to message.
         bytes_consumed += message.get_len();
