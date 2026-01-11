@@ -1,6 +1,6 @@
 CXXFLAGS=-Wall -Wpedantic -std=c++20 -I../utils -L../lib
 LIBS=-lutils
-EXECS=main read_file
+EXECS=read_file
 CC=g++
 
 all: $(EXECS)

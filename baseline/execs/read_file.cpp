@@ -64,23 +64,47 @@ int main(void) {
 
     // Begin plotting process.
     gp = popen("gnuplot", "w");
-    fprintf(gp, "set title 'Number of terminals and non-terminals in grammar vs. number of messages'\n");
-    fprintf(gp, "set xlabel 'Number of messages'\n");
-    fprintf(gp, "set ylabel 'Number of terminals and non-terminals'\n");
-    fprintf(gp, "unset key\n");
-    fprintf(gp, "set terminal png\n");
-    fprintf(gp, "set output 'plot.png'\n");
-    fprintf(gp, "plot '-' with lines\n");
 
     // Make grammar and plot.
     i = 0;
+    fprintf(gp,"$DATA << EOD\n");
     for (const auto& message : messages) {
         grammar.add_message(message.serialize());
-        fprintf(gp, "%d %d\n", i, grammar.get_num_non_terminals() + grammar.get_num_terminals());
+        fprintf(gp,"%d %d %d %d\n", i, grammar.get_num_non_terminals() + grammar.get_num_terminals(), grammar.get_num_non_terminals(), grammar.get_num_terminals());
         i++;
     }
-    
+    fprintf(gp,"EOD\n");
+
+    // Set plot attributes.
+    fprintf(gp,"set terminal png size 900,700\n");
+    fprintf(gp,"set output 'plot.png'\n");
+    fprintf(gp,"set multiplot\n");
+    fprintf(gp,"set size 1,0.5\n");
+    fprintf(gp,"set origin 0,0.5\n");
+    fprintf(gp,"set title 'Total terminals and non-terminals vs. number of messages'\n");
+    fprintf(gp,"set xlabel 'Number of messages'\n");
+    fprintf(gp,"set ylabel 'Terminals and non-terminals'\n");
+    fprintf(gp,"unset key\n");
+    fprintf(gp,"plot $DATA using 1:2 w l title 'Total'\n");
+    fprintf(gp,"set size 0.5,0.5\n");
+    fprintf(gp,"set origin 0,0\n");
+    fprintf(gp,"set title 'Non-terminals vs. number of messages'\n");
+    fprintf(gp,"set xlabel 'Number of messages'\n");
+    fprintf(gp,"set ylabel 'Non-terminals'\n");
+    fprintf(gp,"unset key\n");
+    fprintf(gp,"plot $DATA using 1:3 w l title 'Non-terminals'\n");
+    fprintf(gp,"set origin 0.5,0\n");
+    fprintf(gp,"set title 'Terminals vs. number of messages'\n");
+    fprintf(gp,"set xlabel 'Number of messages'\n");
+    fprintf(gp,"set ylabel 'Terminals'\n");
+    fprintf(gp,"unset key\n");
+    fprintf(gp,"plot $DATA using 1:4 w l title 'Terminals'\n");
+    fprintf(gp,"unset multiplot\n");
+ 
     pclose(gp);
+
+    std::cout << grammar;
+
     ifile.close();
 
     return 0;

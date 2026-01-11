@@ -9,6 +9,7 @@
 
 #pragma once
 #include <unordered_map>
+#include <map>
 #include <unordered_set>
 #include <vector>
 #include <cstdint>
@@ -27,11 +28,13 @@ public:
     int get_num_terminals(void) const;
 
     // Printing methods.
-    void print(std::ostream *os);
+    void print_attr(std::ostream *os);
+    void print_grammar(std::ostream *os);
     friend std::ostream& operator<<(std::ostream& os, Grammar& grammar);
 
 private:
     std::unordered_map<int, std::vector<std::unordered_set<uint8_t>>> grammar;
     int num_non_terminals;
     int num_terminals;
+    std::map<int, int> mpl;
 };

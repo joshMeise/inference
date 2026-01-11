@@ -45,7 +45,9 @@ void Grammar::add_message(std::vector<uint8_t> message) {
 
         // Increment number of non-terminals.
         num_non_terminals++;
-    
+
+        // Insert into message per length map.
+        mpl.emplace(len, 1);
     } else {
         // Find value in grammar.
         auto& value = grammar.at(len);
@@ -65,6 +67,9 @@ void Grammar::add_message(std::vector<uint8_t> message) {
             value[i].insert(val);
             i++;
         }
+
+        // Increment number of messages per length.
+        mpl[len]++;
     }
 }
 
@@ -73,7 +78,13 @@ int Grammar::get_num_non_terminals(void) const { return num_non_terminals; }
 int Grammar::get_num_terminals(void) const { return num_terminals; }
 
 // Printing methods.
-void Grammar::print(std::ostream *os) {
+void Grammar::print_attr(std::ostream *os) {
+    std::cout << "Messages per length:\n";
+    for (auto pair : mpl)
+        std::cout << "Length: " << pair.first << ", number of messages: " << pair.second << std::endl;
+}
+
+void Grammar::print_grammar(std::ostream *os) {
     int i, j;
 
     *os << std::format("/* xBNF Grammar */\n");
@@ -142,6 +153,7 @@ void Grammar::print(std::ostream *os) {
 }
 
 std::ostream& operator<<(std::ostream& os, Grammar& grammar) {
-    grammar.print(&os);
+    grammar.print_grammar(&os);
+    grammar.print_attr(&os);
     return os;
 }
