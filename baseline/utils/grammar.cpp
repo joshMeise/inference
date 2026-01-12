@@ -54,7 +54,7 @@ void Grammar::add_message(std::vector<uint8_t> message) {
         
         // For each byte insert into grammar.
         i = 0;
-        for (auto val : message) {
+        for (const auto& val : message) {
             // Adding another terminal/non-terminal.
             if (value[i].find(val) == value[i].end()) {
                 if (value[i].size() != 1) num_terminals++;
@@ -77,11 +77,47 @@ void Grammar::add_message(std::vector<uint8_t> message) {
 int Grammar::get_num_non_terminals(void) const { return num_non_terminals; }
 int Grammar::get_num_terminals(void) const { return num_terminals; }
 
+// Evaluate an inferred grammar and stats to log file.
+void Grammar::evaluate(std::vector<std::vector<uint8_t>> message_bytes, std::ostream *os) {
+    int tp, fp, fn, len, i;
+    std::unordered_map<int, std::vector<std::vector<uint8_t>>> groups;
+
+    tp = 0;
+    fp = 0;
+    fn = 0;
+
+    for (const auto& message : message_bytes) {
+        len = message.size();
+
+        // If key is not in map, each of the bytes in the message qualifies as a false negative.
+        if (grammar.find(len) == grammar.end()) fn += len;
+        else {
+            // Get gramamr rule for given length's non-terminal.
+            const auto& value = grammar.at(len);
+
+            i = 0;
+            for (const auto& byte : message) {
+                // If the byte does not exist in the grammar rule at that position it is a false negative. If it does exist it is a true positive.
+                if (value[i].find(byte) == value[i].end()) fn++;
+                else tp++;
+
+                i++;
+            }
+        }
+    }
+
+    *os << "False negatives: " << fn << std::endl;
+    *os << "True positives: " << tp << std::endl;
+    *os << "Recall: " << std::format("{:.4f}", (double)tp/(tp + fn)*100) << std::endl;
+
+}
+
 // Printing methods.
 void Grammar::print_attr(std::ostream *os) {
-    std::cout << "Messages per length:\n";
+    *os << "Messages per length:\n";
     for (auto pair : mpl)
-        std::cout << "Length: " << pair.first << ", number of messages: " << pair.second << std::endl;
+        *os << "Length: " << pair.first << ", number of messages: " << pair.second << std::endl;
+    *os << "\n\n";
 }
 
 void Grammar::print_grammar(std::ostream *os) {
@@ -154,6 +190,5 @@ void Grammar::print_grammar(std::ostream *os) {
 
 std::ostream& operator<<(std::ostream& os, Grammar& grammar) {
     grammar.print_grammar(&os);
-    grammar.print_attr(&os);
     return os;
 }

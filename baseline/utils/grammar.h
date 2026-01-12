@@ -27,6 +27,9 @@ public:
     int get_num_non_terminals(void) const;
     int get_num_terminals(void) const;
 
+    // Evaluate grammar calculating precision and recall.
+    void evaluate(std::vector<std::vector<uint8_t>> message_bytes, std::ostream *os);
+
     // Printing methods.
     void print_attr(std::ostream *os);
     void print_grammar(std::ostream *os);
