@@ -31,6 +31,8 @@ Header::Header(const std::vector<uint8_t>& bytes, int offset) {
     msg_id[0] = bytes[offset + 7];
     msg_id[1] = bytes[offset + 8];
     msg_id[2] = bytes[offset + 9];
+
+    id = msg_id[0] | (msg_id[1] << 8) | (msg_id[2] << 16);
 }
 
 // Serializer.
@@ -53,6 +55,7 @@ std::vector<uint8_t> Header::serialize(void) const {
 
 // Getter methods.
 int Header::get_len(void) const { return len; }
+int Header::get_msg_id(void) const { return id; }
 
 // Printing methods.
 void Header::print(std::ostream *os) {
@@ -138,6 +141,7 @@ std::vector<uint8_t> MAVLinkMessage::serialize(void) const {
 
 // Getter methods.
 int MAVLinkMessage::get_len(void) const { return (HDRLEN + CSLEN + header.get_len()); }
+int MAVLinkMessage::get_msg_id(void) const { return header.get_msg_id(); }
 
 // Printing methods.
 void MAVLinkMessage::print(std::ostream *os) {

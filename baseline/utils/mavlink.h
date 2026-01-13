@@ -33,6 +33,7 @@ public:
 
     // Getter methods.
     int get_len(void) const;
+    int get_msg_id(void) const;
 
     // Printing methods.
     void print(std::ostream *os);
@@ -47,6 +48,7 @@ private:
     uint8_t sys_id;
     uint8_t comp_id;
     uint8_t msg_id[3];
+    int id;
 };
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -95,6 +97,7 @@ public:
 
     // Getter methods.
     int get_len(void) const;
+    int get_msg_id(void) const;
 
     // Printing methods.
     void print(std::ostream *os);

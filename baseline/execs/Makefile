@@ -1,6 +1,6 @@
 CXXFLAGS=-Wall -Wpedantic -std=c++20 -I../utils -L../lib
 LIBS=-lutils
-EXECS=infer
+EXECS=infer extract
 CC=g++
 
 all: $(EXECS)
