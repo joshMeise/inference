@@ -1,0 +1,46 @@
+Messages per length:
+Length: 13, number of messages: 5423
+Length: 14, number of messages: 285
+Length: 15, number of messages: 4
+Length: 16, number of messages: 40
+Length: 17, number of messages: 6
+Length: 18, number of messages: 1
+Length: 19, number of messages: 2
+Length: 21, number of messages: 2586
+Length: 22, number of messages: 48
+Length: 23, number of messages: 10668
+Length: 25, number of messages: 152
+Length: 26, number of messages: 321
+Length: 27, number of messages: 2
+Length: 29, number of messages: 6
+Length: 30, number of messages: 358
+Length: 31, number of messages: 770
+Length: 32, number of messages: 282
+Length: 34, number of messages: 2
+Length: 35, number of messages: 1
+Length: 37, number of messages: 674
+Length: 38, number of messages: 18
+Length: 40, number of messages: 5816
+Length: 42, number of messages: 6
+Length: 44, number of messages: 3067
+Length: 48, number of messages: 552
+Length: 49, number of messages: 21
+Length: 52, number of messages: 278
+Length: 53, number of messages: 138
+Length: 54, number of messages: 138
+Length: 55, number of messages: 254
+Length: 56, number of messages: 26
+Length: 63, number of messages: 550
+Length: 64, number of messages: 46
+Length: 68, number of messages: 140
+Length: 71, number of messages: 278
+Length: 82, number of messages: 300
+Length: 90, number of messages: 2
+
+
+Number of terminals = 41814
+Number of non-terminals = 727
+
+False negatives: 0
+True positives: 0
+Recall: nan

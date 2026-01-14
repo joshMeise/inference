@@ -1,0 +1,40 @@
+Messages per length:
+Length: 13, number of messages: 1639
+Length: 14, number of messages: 95
+Length: 16, number of messages: 15
+Length: 17, number of messages: 2
+Length: 21, number of messages: 750
+Length: 22, number of messages: 10
+Length: 23, number of messages: 3236
+Length: 25, number of messages: 36
+Length: 26, number of messages: 90
+Length: 29, number of messages: 1
+Length: 30, number of messages: 129
+Length: 31, number of messages: 203
+Length: 32, number of messages: 87
+Length: 34, number of messages: 1
+Length: 37, number of messages: 194
+Length: 38, number of messages: 4
+Length: 40, number of messages: 1706
+Length: 42, number of messages: 3
+Length: 44, number of messages: 924
+Length: 48, number of messages: 162
+Length: 49, number of messages: 6
+Length: 52, number of messages: 93
+Length: 53, number of messages: 40
+Length: 54, number of messages: 46
+Length: 55, number of messages: 77
+Length: 56, number of messages: 9
+Length: 63, number of messages: 176
+Length: 64, number of messages: 16
+Length: 68, number of messages: 42
+Length: 71, number of messages: 87
+Length: 82, number of messages: 99
+
+
+Number of terminals = 31496
+Number of non-terminals = 674
+
+False negatives: 26534
+True positives: 665494
+Recall: 96.1658

@@ -79,11 +79,10 @@ int Grammar::get_num_terminals(void) const { return num_terminals; }
 
 // Evaluate an inferred grammar and stats to log file.
 void Grammar::evaluate(std::vector<std::vector<uint8_t>> message_bytes, std::ostream *os) {
-    int tp, fp, fn, len, i;
+    int tp, fn, len, i;
     std::unordered_map<int, std::vector<std::vector<uint8_t>>> groups;
 
     tp = 0;
-    fp = 0;
     fn = 0;
 
     for (const auto& message : message_bytes) {
@@ -118,6 +117,10 @@ void Grammar::print_attr(std::ostream *os) {
     for (auto pair : mpl)
         *os << "Length: " << pair.first << ", number of messages: " << pair.second << std::endl;
     *os << "\n\n";
+
+    *os << "Number of terminals = " << num_terminals << std::endl;
+    *os << "Number of non-terminals = " << num_non_terminals << std::endl << std::endl;
+
 }
 
 void Grammar::print_grammar(std::ostream *os) {
