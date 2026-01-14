@@ -1,6 +1,6 @@
 CXXFLAGS=-Wall -Wpedantic -std=c++20 -I../utils -L../lib
 LIBS=-lutils
-EXECS=infer extract count_unique_types
+EXECS=infer extract count_unique_types separate
 CC=g++
 
 all: $(EXECS)
